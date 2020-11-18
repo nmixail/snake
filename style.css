@@ -1,0 +1,17 @@
+body,html{
+	margin: 0;
+	height: 100%;
+}
+body{
+	display: flex;
+}
+canvas{
+	border: 20px solid #578A34;
+	background-color: #8ECC39;
+	background-image: linear-gradient(45deg, #A7D948 25%, transparent 25%, transparent 75%, #A7D948 75%, #A7D948),
+		linear-gradient(45deg, #A7D948 25%, transparent 25%, transparent 75%, #A7D948 75%, #A7D948);
+	background-size: 120px 120px;
+	background-position: 0 0,
+		60px 60px;
+		margin: auto;
+}
