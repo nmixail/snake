@@ -30,27 +30,15 @@ let food = {
 	img: new Image(),
 	x: 300,
 	y: 300,
-	// width: RECT_WIDTH,
-	// height: RECT_HEIGHT,
 	init: function () {
 		this.img.src = "food.svg";
-
-		// this.randomazer();
-		// console.log(this.x);
-		// console.log(this.y);
 		this.randomazer();
-		this.img.onload = function () {
-			ctx.drawImage(this.img, this.x, this.y, RECT_WIDTH, RECT_HEIGHT);
-			// ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-		}.bind(this);
 	},
 	draw: function () {
 		ctx.drawImage(this.img, this.x, this.y, RECT_WIDTH, RECT_HEIGHT);
-		// ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
 	},
 	clear: function () {
 		ctx.clearRect(this.x, this.y, RECT_WIDTH, RECT_HEIGHT);
-		// ctx.clearRect(this.x, this.y, this.width, this.height);
 	},
 	randomazer: function () {
 		let randomY = Math.floor(Math.random() * (10));
@@ -68,8 +56,6 @@ let snake = {
 	bodyModifyLeft: new Image(),
 	head: new Image(),
 	size: 5,
-	// width: 60,
-	// height: 60,
 	x: [],
 	y: [],
 	angles: [],
@@ -84,42 +70,17 @@ let snake = {
 			this.y.push(300);
 			this.angles.push(90);
 		}
-		/*
-				this.head.onload = function () {
-					// ctx.drawImage(this.head, 120, 0, rect, this.height);
-					// ctx.drawImage(this.head, 120, 0, this.width, this.height);
-				}.bind(this);
-				this.body.onload = function () {
-					// ctx.drawImage(this.body, 60, 0, this.width, this.height);
-				}.bind(this);
-				this.tail.onload = function () {
-					// ctx.drawImage(this.tail, 0, 0, this.width, this.height);
-				}.bind(this);
-				this.body_p.onload = function () {
-					// ctx.drawImage(this.body_p, 0, 60, this.width, this.height);
-				}.bind(this); */
-
 	},
 	draw: function (x, y, image, degree) {
 		let angle = (degree - 90) * Math.PI / 180;
 		ctx.save();
 		ctx.translate(x, y);
 		ctx.translate(RECT_WIDTH / 2, RECT_HEIGHT / 2);
-		// ctx.translate(this.width / 2, this.height / 2);
 		ctx.rotate(angle);
 		ctx.drawImage(image, -(RECT_WIDTH / 2), -(RECT_HEIGHT / 2), RECT_WIDTH, RECT_HEIGHT);
-		// ctx.drawImage(image, -(this.width / 2), -(this.height / 2), this.width, this.height);
 		ctx.restore();
 	},
-	/*clearHead: function () {
-		ctx.clearRect(this.x[0], this.y[0], this.width, this.height);
-	},
-	clearTail: function () {
-		ctx.clearRect(this.x[this.size - 1], y[this.size - 1], this.width, this.height);
-	},*/
 	new_coordinate(dx, dy, da) {
-		// let head_x = this.x[0];
-		// let head_y = this.y[0];
 		for (let i = this.size - 1; i > 0; i--) {
 			this.x[i] = this.x[i - 1];
 			this.y[i] = this.y[i - 1];
@@ -128,29 +89,30 @@ let snake = {
 		this.x[0] += dx;
 		this.y[0] += dy;
 		this.angles[0] = da;
-		// this.angles[1] = da;
 	},
 	clear: function (x, y) {
 		ctx.clearRect(x, y, RECT_WIDTH, RECT_HEIGHT);
-		// ctx.clearRect(x, y, this.width, this.height);
 	}
 };
 
 
-
-
-
-
-// randomazer();
-// food();
 food.init();
 snake.init();
-// setTimeout(function () {
-// 	snake.draw(120, 120, snake.head, 180);
-// }, 1000);
 
 
 let promises = [];
+
+// promises.push(new Promise(resolve =>{
+// 	food.onload = function() {
+// 		resolve();
+// 	}
+// }));
+
+promises.push(new Promise(resolve => {
+	food.img.onload = function () {
+		resolve();
+	}
+}));
 
 for (let key in snake) {
 	if (snake[key] instanceof Image) {
@@ -161,6 +123,8 @@ for (let key in snake) {
 		}));
 	}
 }
+
+
 Promise.all(promises)
 	// .then(alert)
 	.then(function () {
@@ -169,6 +133,8 @@ Promise.all(promises)
 			snake.draw(snake.x[i], snake.y[i], snake.body, snake.angles[i]);
 		}
 		snake.draw(snake.x[snake.size - 1], snake.y[snake.size - 1], snake.tail, snake.angles[snake.size - 1]);
+		food.draw();
+		console.log("работает");
 	})
 	.then(async function draw_test() {
 		let test = requestAnimationFrame(draw_test);
@@ -267,24 +233,9 @@ Promise.all(promises)
 			window.cancelAnimationFrame(test);
 			// return;
 		}
-		// snake.draw(snake.x[1],snake.y[1],snake.body, snake.angles[1]);
-		/*let test = new Promise((resolve, reject) => {
-			setTimeout(() => resolve("готово!"), 0)
-		  });
-		let result = await test; */
 
 	});
 
-// alert(snake.head instanceof Image);
-// snake.draw(120, 120, snake.head, 180);
-// console.log(snake);
-// snake_new.draw();
-// setInterval(function(){
-// 	food_new.draw();
-// }, 2000);
-// new_draw();
-// draw();
-// interval = setInterval(draw,time);
 
 
 
