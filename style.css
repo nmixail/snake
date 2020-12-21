@@ -1,17 +1,100 @@
-body,html{
+:root {
+	--colorPrimary-h: 90;
+	--colorPrimary-s: 70%;
+	--colorPrimary-l: 30%;
+
+	--colorPrimary: hsl(var(--colorPrimary-h), var(--colorPrimary-s), var(--colorPrimary-l));
+
+	--lightnessTransform: 6%;
+	--saturationTransform: 6%;
+	--hueTransform: 4;
+
+	--primary-color-light-l: calc(var(--colorPrimary-l) + var(--lightnessTransform));
+	--primary-color-light-s: calc(var(--colorPrimary-s) + var(--saturationTransform));
+	--primary-color-light-h: calc(var(--colorPrimary-h) - var(--hueTransform));
+
+	--colorPrimary-light: hsl(var(--primary-color-light-h),
+			var(--primary-color-light-s),
+			var(--primary-color-light-l));
+}
+
+body,
+html {
 	margin: 0;
 	height: 100%;
 }
-body{
+
+body {
 	display: flex;
 }
-canvas{
-	border: 20px solid #578A34;
-	background-color: #8ECC39;
-	background-image: linear-gradient(45deg, #A7D948 25%, transparent 25%, transparent 75%, #A7D948 75%, #A7D948),
-		linear-gradient(45deg, #A7D948 25%, transparent 25%, transparent 75%, #A7D948 75%, #A7D948);
+
+canvas {
+	border: 5px solid #000000;
+	background-color: var(--colorPrimary);
+	background-image: linear-gradient(45deg, var(--colorPrimary-light) 25%, transparent 25%, transparent 75%, var(--colorPrimary-light) 75%, var(--colorPrimary-light)),
+		linear-gradient(45deg, var(--colorPrimary-light) 25%, transparent 25%, transparent 75%, var(--colorPrimary-light) 75%, var(--colorPrimary-light));
 	background-size: 120px 120px;
 	background-position: 0 0,
 		60px 60px;
-		margin: auto;
+	margin: auto;
+	color: red;
+}
+
+.layer {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: grey;
+	opacity: 0.7;
+}
+
+.modal {
+	width: 400px;
+	height: 200px;
+	background-color: white;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	border-radius: 10px;
+	padding: 0px 10px;
+}
+
+label {
+	display: block;
+	margin-bottom: 10px;
+}
+
+
+.modal h2 {
+	text-align: center;
+}
+
+.modal select {
+	border: 1px solid black;
+	border-radius: 5px;
+	color: white;
+	background-color: #694949;
+	padding: 5px;
+	padding-right: 10px;
+	border: 0;
+	margin: 0;
+	outline: none;
+	border-radius: 3px;
+}
+
+.modal button {
+	margin: auto;
+	margin-top: 20px;
+	display: block;
+	color: white;
+	background-color: green;
+	border-radius: 10px;
+	border: none;
+	padding: 5px 10px;
+	font-size: 20px;
+	outline: none;
+	cursor: pointer;
 }

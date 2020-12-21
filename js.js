@@ -1,30 +1,23 @@
 "use strict";
-const RECT_WIDTH = 60;
-const RECT_HEIGHT = 60;
 
 let canvas = document.querySelector("canvas");
 let ctx = canvas.getContext("2d");
+let modal = document.querySelector(".modal");
+let primaryColor = document.querySelector(".primary-color input");
+let select = document.querySelector(".squre-size select");
+let newGame = document.querySelector(".modal button");
 
-
+let RECT_WIDTH = 60;
+let RECT_HEIGHT = 60;
+select.value = 60;
+primaryColor.value = RGBToHex(window.getComputedStyle(canvas, null).backgroundColor);
 
 let dx = RECT_WIDTH;
 let dy = 0;
 let da = 90;
 
 let count = 0;
-
-let deg;
-let drawX = 0;
-let drawY = 10;
-let time = 150;
-let interval;
-let foodX = 330;
-let foodY = 450;
-let doStep = false;
-let score = 0;
-let game_ON = true;
-
-
+let speed = 1;
 
 let food = {
 	img: new Image(),
@@ -41,14 +34,13 @@ let food = {
 		ctx.clearRect(this.x, this.y, RECT_WIDTH, RECT_HEIGHT);
 	},
 	randomazer: function () {
-		let randomY = Math.floor(Math.random() * (10));
-		let randomX = Math.floor(Math.random() * (15));
-		this.x = randomX * 60;
-		this.y = randomY * 60;
+		let randomY = Math.floor(Math.random() * (canvas.height/RECT_HEIGHT));
+		let randomX = Math.floor(Math.random() * (canvas.width/RECT_WIDTH));
+		this.x = randomX * RECT_WIDTH;
+		this.y = randomY * RECT_HEIGHT;
 	}
-
-
 }
+
 let snake = {
 	tail: new Image(),
 	body: new Image(),
@@ -65,9 +57,13 @@ let snake = {
 		this.tail.src = "tail.svg";
 		this.bodyModifyRight.src = "bodyModifyRight.svg";
 		this.bodyModifyLeft.src = "bodyModifyLeft.svg";
+		this.x = [];
+		this.y = [];
+		this.angles = [];
+		this.size = 5;
 		for (let i = 0; i < this.size; i++) {
-			this.x.push(540 - i * RECT_WIDTH);
-			this.y.push(300);
+			this.x.push(RECT_WIDTH*8 - i * RECT_WIDTH);
+			this.y.push(RECT_HEIGHT*6);
 			this.angles.push(90);
 		}
 	},
@@ -95,18 +91,11 @@ let snake = {
 	}
 };
 
+function start(){
+	let promises = [];
 
 food.init();
 snake.init();
-
-
-let promises = [];
-
-// promises.push(new Promise(resolve =>{
-// 	food.onload = function() {
-// 		resolve();
-// 	}
-// }));
 
 promises.push(new Promise(resolve => {
 	food.img.onload = function () {
@@ -124,9 +113,7 @@ for (let key in snake) {
 	}
 }
 
-
 Promise.all(promises)
-	// .then(alert)
 	.then(function () {
 		snake.draw(snake.x[0], snake.y[0], snake.head, snake.angles[0]);
 		for (let i = 1; i < snake.x.length - 1; i++) {
@@ -134,14 +121,13 @@ Promise.all(promises)
 		}
 		snake.draw(snake.x[snake.size - 1], snake.y[snake.size - 1], snake.tail, snake.angles[snake.size - 1]);
 		food.draw();
-		console.log("работает");
 	})
 	.then(async function draw_test() {
 		let test = requestAnimationFrame(draw_test);
-		if (++count < 20) {
+		if (--count > speed) {
 			return;
 		}
-		count = 0;
+		count = 20;
 		// очистка головы, тулвища, которое идет за головой и хвоста
 		snake.clear(snake.x[0], snake.y[0]);
 		snake.clear(snake.x[snake.size - 1], snake.y[snake.size - 1]);
@@ -150,9 +136,12 @@ Promise.all(promises)
 		snake.new_coordinate(dx, dy, da);
 		let overlap = false;
 		
-
+		// съел
 		if ((snake.x[0] == food.x) && (snake.y[0] == food.y)) {
 			snake.size++;
+			if (snake.size % 3 == 0) {
+				speed++;
+			}
 			snake.x.push(snake.x[snake.size - 2]);
 			snake.y.push(snake.y[snake.size - 2]);
 			snake.angles.push(snake.angles[snake.size - 2]);
@@ -166,7 +155,6 @@ Promise.all(promises)
 						overlap = true;
 					}
 				}
-				console.log("отработал");
 			} while (overlap);
 			food.draw();
 		}
@@ -225,17 +213,20 @@ Promise.all(promises)
 		for (let i = 1; i < snake.size; i++) {
 			if ((snake.x[i] == snake.x[0]) && (snake.y[i] == snake.y[0])) {
 				overlap = true;
-				console.log("проверил")
+				break;
 			}
+			
+		}
+		if ((snake.x[0]==canvas.width) || (snake.x[0]<0) || (snake.y[0]==canvas.height) || (snake.y[0]<0)){
+			overlap = true;
 		}
 		if (overlap) {
-			console.log("game over");
 			window.cancelAnimationFrame(test);
-			// return;
+			modal.style.display="block";
 		}
 
 	});
-
+}
 
 
 
@@ -243,53 +234,115 @@ document.addEventListener("keydown", function (event) {
 	if (event.repeat) {
 		return;
 	}
-	console.log(event.code);
 	if (event.code == "KeyW") {
-		/*if (drawY == -10 || !doStep) {
-			return;
-		}
-		doStep = false;*/
 		dy = -RECT_HEIGHT;
 		dx = 0;
 		da = 0;
-		// drawX = 0;
-		// drawY = 10;
 	}
 	if (event.code == "KeyS") {
-		/*if (drawY == 10 || !doStep) {
-			return;
-		}
-		doStep = false; */
 		dy = RECT_HEIGHT;
 		dx = 0;
 		da = 180;
-		// drawX = 0;
-		// drawY = -10;
 	}
 	if (event.code == "KeyD") {
-		/*if (drawX == 10 || !doStep) {
-			return;
-		}
-		doStep = false;*/
 		dy = 0;
 		dx = RECT_WIDTH;
 		da = 90;
-		// drawX = -10;
-		// drawY = 0;
 	}
 	if (event.code == "KeyA") {
-		/*if (drawX == -10 || !doStep) {
-			return;
-		}
-		doStep = false;*/
 		dy = 0;
 		dx = -RECT_WIDTH;
 		da = 270;
-		// drawX = 10;
-		// drawY = 0;
 	}
-	/*if (game_ON) {
-		clearInterval(interval);
-		// interval = setInterval(draw,time);
-	}*/
 });
+
+newGame.addEventListener("click", function(){
+	modal.style.display = "none";
+	ctx.clearRect(0,0, canvas.width, canvas.height);
+	dx = RECT_WIDTH;
+	dy = 0;
+	da = 90;
+	speed = 1;
+	start();
+});
+
+primaryColor.addEventListener("change", function(){
+	setTheme(this.value);
+});
+select.addEventListener("change", function(){
+	RECT_WIDTH = Number(this.value);
+	RECT_HEIGHT = Number(this.value);
+	canvas.width = 900;
+	canvas.height = 600;
+	canvas.width = Math.floor(Number(canvas.width) / RECT_WIDTH) * RECT_WIDTH;
+	canvas.height = Math.floor(Number(canvas.height) / RECT_HEIGHT) * RECT_HEIGHT;
+	canvas.style.backgroundPosition =`0 0, ${RECT_WIDTH}px ${RECT_HEIGHT}px`;
+	canvas.style.backgroundSize = `${RECT_WIDTH*2}px ${RECT_HEIGHT*2}px`;
+});
+
+function setTheme(H) {
+	// Convert hex to RGB first
+	let r = 0, g = 0, b = 0;
+	if (H.length == 4) {
+	  r = "0x" + H[1] + H[1];
+	  g = "0x" + H[2] + H[2];
+	  b = "0x" + H[3] + H[3];
+	} else if (H.length == 7) {
+	  r = "0x" + H[1] + H[2];
+	  g = "0x" + H[3] + H[4];
+	  b = "0x" + H[5] + H[6];
+	}
+	// Then to HSL
+	r /= 255;
+	g /= 255;
+	b /= 255;
+	let cmin = Math.min(r,g,b),
+		cmax = Math.max(r,g,b),
+		delta = cmax - cmin,
+		h = 0,
+		s = 0,
+		l = 0;
+  
+	if (delta == 0)
+	  h = 0;
+	else if (cmax == r)
+	  h = ((g - b) / delta) % 6;
+	else if (cmax == g)
+	  h = (b - r) / delta + 2;
+	else
+	  h = (r - g) / delta + 4;
+  
+	h = Math.round(h * 60);
+  
+	if (h < 0)
+	  h += 360;
+  
+	l = (cmax + cmin) / 2;
+	s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+	s = +(s * 100).toFixed(1);
+	l = +(l * 100).toFixed(1);
+	
+	document.documentElement.style.setProperty(`--colorPrimary-h`, h);
+	document.documentElement.style.setProperty(`--colorPrimary-s`, s + '%');
+	document.documentElement.style.setProperty(`--colorPrimary-l`, l + '%');
+  }
+
+  function RGBToHex(rgb) {
+	// Choose correct separator
+	let sep = rgb.indexOf(",") > -1 ? "," : " ";
+	// Turn "rgb(r,g,b)" into [r,g,b]
+	rgb = rgb.substr(4).split(")")[0].split(sep);
+  
+	let r = (+rgb[0]).toString(16),
+		g = (+rgb[1]).toString(16),
+		b = (+rgb[2]).toString(16);
+  
+	if (r.length == 1)
+	  r = "0" + r;
+	if (g.length == 1)
+	  g = "0" + g;
+	if (b.length == 1)
+	  b = "0" + b;
+  
+	return "#" + r + g + b;
+  }
