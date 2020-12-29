@@ -26,6 +26,27 @@ html {
 
 body {
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-content: center;
+}
+
+header {
+	display: flex;
+	width: 900px;
+	align-items: baseline;
+	justify-content: space-between;
+	margin-bottom: 5px;
+	font-size: 20px;
+}
+header h1{
+	margin: 0;
+	font-size: 1.5em;
+	
+}
+header p {
+	margin: 0;
+	font-size: 1em;
 }
 
 canvas {
@@ -36,7 +57,6 @@ canvas {
 	background-size: 120px 120px;
 	background-position: 0 0,
 		60px 60px;
-	margin: auto;
 	color: red;
 }
 
@@ -48,10 +68,10 @@ canvas {
 	opacity: 0.7;
 }
 
-.modal {
+.modal-main {
 	width: 400px;
 	height: 200px;
-	background-color: white;
+	background-color: #d8d1d1;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -62,17 +82,17 @@ canvas {
 	padding: 0px 10px;
 }
 
-label {
+.modal-main label {
 	display: block;
 	margin-bottom: 10px;
 }
 
 
-.modal h2 {
+.modal-main h2 {
 	text-align: center;
 }
 
-.modal select {
+.modal-main select {
 	border: 1px solid black;
 	border-radius: 5px;
 	color: white;
@@ -85,16 +105,64 @@ label {
 	border-radius: 3px;
 }
 
-.modal button {
+.modal-main button {
 	margin: auto;
 	margin-top: 20px;
 	display: block;
 	color: white;
-	background-color: green;
+	background-color:  #3b358b;
 	border-radius: 10px;
 	border: none;
 	padding: 5px 10px;
 	font-size: 20px;
 	outline: none;
 	cursor: pointer;
+}
+
+.modal-score {
+	width: 250px;
+	height: 180px;
+	background-color: #d8d1d1;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	border-radius: 10px;
+	/* padding: 0px 10px; */
+	display: none;
+	flex-direction: column;
+	justify-content: space-around;
+	/* box-sizing: border-box; */
+}
+
+.modal-score h2 {
+	text-align: center;
+	margin: 0;
+	/* font-size: 30px; */
+}
+.modal-score p {
+	margin: 0;
+	text-align: center;
+	font-size: 30px;
+	
+}
+.modal-score p span {
+	font-size: 40px;
+	font-weight: 700;
+}
+.modal-score button {
+	margin: 0;
+	/* margin-top: 20px; */
+	display: block;
+	color: white;
+	background-color: #3b358b;
+	border-radius: 10px;
+	border: none;
+	padding: 5px 10px;
+	font-size: 20px;
+	outline: none;
+	cursor: pointer; 
+	align-self: center;
 }

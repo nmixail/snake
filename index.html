@@ -8,9 +8,13 @@
 	<!-- <script defer src="js-test.js"></script> -->
 </head>
 <body>
+	<header>
+		<h1>Игра змейка</h1>
+		<p>Очки: <span>10</span></p>
+	</header>
 	<canvas height="600px" width="900px"></canvas>
 	<!-- <div class="layer"></div> -->
-	<div class="modal">
+	<div class="modal-main">
 		<h2>Игра змейка</h2>
 		<label  class="primary-color">
 			Выбор цвета:
@@ -20,18 +24,20 @@
 			Сторона квадрата:
 			<select>
 				<option disabled>Выберете размер</option>
-				<!-- <option value="10">10x10</option> -->
-				<!-- <option value="20">20x20</option> -->
 				<option value="30">30x30</option>
 				<option value="40">40x40</option>
 				<option value="50">50x50</option>
-				<option value="60">60x60</option>
+				<option selected value="60">60x60</option>
 				<option value="70">70x70</option>
 				<option value="80">80x80</option>
 			</select>
 		</label>
 		<button>Новая игра</button>
-		
+	</div>
+	<div class="modal-score">
+		<h2>Конец игры</h2>
+		<p>Съедено: <span>10</span></p>
+		<button>Ок</button>
 	</div>
 </body>
 </html>
