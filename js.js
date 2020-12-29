@@ -232,7 +232,6 @@ function start() {
 				window.cancelAnimationFrame(test);
 				modalScore.style.display = "flex";
 				document.querySelector(".modal-score p span").innerHTML = score;
-				// modal.style.display = "block";
 			}
 
 		});

@@ -130,17 +130,14 @@ canvas {
 	bottom: 0;
 	margin: auto;
 	border-radius: 10px;
-	/* padding: 0px 10px; */
 	display: none;
 	flex-direction: column;
 	justify-content: space-around;
-	/* box-sizing: border-box; */
 }
 
 .modal-score h2 {
 	text-align: center;
 	margin: 0;
-	/* font-size: 30px; */
 }
 .modal-score p {
 	margin: 0;
@@ -154,7 +151,6 @@ canvas {
 }
 .modal-score button {
 	margin: 0;
-	/* margin-top: 20px; */
 	display: block;
 	color: white;
 	background-color: #3b358b;
