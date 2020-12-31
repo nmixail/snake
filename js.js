@@ -25,6 +25,7 @@ let da = 90;
 let count = 0;
 let speed = 1;
 let score = 0;
+let doneMove = false;
 
 let pointerX = document.width;
 let pointerY = document.height;
@@ -219,7 +220,7 @@ function start() {
 			}
 			// рисование хвоста
 			snake.draw(snake.x[snake.size - 1], snake.y[snake.size - 1], snake.tail, snake.angles[snake.size - 1]);
-
+			doneMove = true;
 			//  конец игры
 			overlap = false;
 			for (let i = 1; i < snake.size; i++) {
@@ -240,13 +241,20 @@ function start() {
 
 		});
 }
-document.onpointerdown = function(event) {
+canvas.onpointerdown = function(event) {
 	pointerX = event.clientX;
 	pointerY = event.clientY;
-	console.log("поехали");
+	// console.log("поехали");
 	// console.log(pointerX, pointerY);
 	function pointerMove(event) {
-		console.log("работаю");
+		// console.log("работаю");
+		if (!doneMove){
+			return;
+		}
+		let changeX = event.clientX - pointerX;
+		let changeY = event.clientY - pointerY;
+		if (Math.abs(changeY) > Math.abs(changeX))
+		{
 		if (event.clientY < pointerY) {
 			if (dy > 0) {
 				return;
@@ -254,6 +262,7 @@ document.onpointerdown = function(event) {
 			dy = -RECT_HEIGHT;
 			dx = 0;
 			da = 0;
+			doneMove = false;
 		}
 		if (event.clientY > pointerY) {
 			if (dy < 0) {
@@ -262,7 +271,9 @@ document.onpointerdown = function(event) {
 			dy = RECT_HEIGHT;
 			dx = 0;
 			da = 180;
+			doneMove = false;
 		}
+	} else {
 		if (event.clientX > pointerX) {
 			if (dx < 0) {
 				return;
@@ -270,6 +281,7 @@ document.onpointerdown = function(event) {
 			dy = 0;
 			dx = RECT_WIDTH;
 			da = 90;
+			doneMove = false;
 		}
 		if (event.clientX < pointerX) {
 			if (dx > 0) {
@@ -278,20 +290,25 @@ document.onpointerdown = function(event) {
 			dy = 0;
 			dx = -RECT_WIDTH;
 			da = 270;
+			doneMove = false;
 		}
+	}
 		pointerX = event.clientX;
 		pointerY = event.clientY;
 	}
-	document.addEventListener("pointermove", pointerMove);
-	document.onpointerup = function (event) {
-		document.removeEventListener("pointermove", pointerMove);
-		document.onpointerup = null;
+	canvas.addEventListener("pointermove", pointerMove);
+	canvas.onpointerup = function (event) {
+		canvas.removeEventListener("pointermove", pointerMove);
+		canvas.onpointerup = null;
 	};
 };
 
 
 document.addEventListener("keydown", function (event) {
 	if (event.repeat) {
+		return;
+	}
+	if (!doneMove){
 		return;
 	}
 	if (event.code == "KeyW") {
@@ -301,6 +318,7 @@ document.addEventListener("keydown", function (event) {
 		dy = -RECT_HEIGHT;
 		dx = 0;
 		da = 0;
+		doneMove = false;
 	}
 	if (event.code == "KeyS") {
 		if (dy < 0) {
@@ -309,6 +327,7 @@ document.addEventListener("keydown", function (event) {
 		dy = RECT_HEIGHT;
 		dx = 0;
 		da = 180;
+		doneMove = false;
 	}
 	if (event.code == "KeyD") {
 		if (dx < 0) {
@@ -317,6 +336,7 @@ document.addEventListener("keydown", function (event) {
 		dy = 0;
 		dx = RECT_WIDTH;
 		da = 90;
+		doneMove = false;
 	}
 	if (event.code == "KeyA") {
 		if (dx > 0) {
@@ -325,6 +345,7 @@ document.addEventListener("keydown", function (event) {
 		dy = 0;
 		dx = -RECT_WIDTH;
 		da = 270;
+		doneMove = false;
 	}
 });
 

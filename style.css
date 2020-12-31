@@ -23,6 +23,7 @@ html {
 	margin: 0;
 	height: 100%;
 	background-color: #888;
+	touch-action: none
 }
 
 body {
