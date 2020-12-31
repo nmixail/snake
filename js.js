@@ -9,7 +9,8 @@ let newGame = document.querySelector(".modal-main button");
 let header = document.querySelector("header");
 let scoreText = document.querySelector("header p span");
 let modalScore = document.querySelector(".modal-score");
-let switchToMainMenu = document.querySelector(".modal-score button");
+// let switchToMainMenu = document.querySelector(".modal-score button");
+let modalKeybordControl = document.querySelector(".modal-keybord-control");
 
 let RECT_WIDTH = 60;
 let RECT_HEIGHT = 60;
@@ -279,6 +280,7 @@ document.addEventListener("keydown", function (event) {
 
 newGame.addEventListener("click", function () {
 	modalMain.style.display = "none";
+	modalKeybordControl.style.display = "block";
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	dx = RECT_WIDTH;
 	dy = 0;
@@ -286,12 +288,17 @@ newGame.addEventListener("click", function () {
 	speed = 1;
 	score = 0;
 	scoreText.innerHTML = 0;
-	start();
+	
 });
 
-switchToMainMenu.addEventListener("click", function () {
+document.querySelector(".modal-score button").addEventListener("click", function () {
 	modalScore.style.display = "none";
 	modalMain.style.display = "block";
+});
+
+document.querySelector(".modal-keybord-control button").addEventListener("click", function () {
+	modalKeybordControl.style.display = "none";
+	start();
 });
 
 primaryColor.addEventListener("change", function () {

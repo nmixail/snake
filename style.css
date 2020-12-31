@@ -22,13 +22,48 @@ body,
 html {
 	margin: 0;
 	height: 100%;
+	background-color: #888;
 }
 
 body {
 	display: flex;
-	flex-wrap: wrap;
+	/* flex-wrap: wrap; */
+	flex-direction: column;
 	justify-content: center;
-	align-content: center;
+	align-items: center;
+}
+
+h2 {
+	text-align: center;
+}
+
+button {
+	display: block;
+	color: white;
+	background-color:  #3b358b;
+	border-radius: 10px;
+	border: none;
+	padding: 5px 10px;
+	font-size: 20px;
+	outline: none;
+	cursor: pointer;
+	box-shadow: 0px 3px 0px 0px #2c2869;
+	transition: 0.3s;
+}
+
+button:active {
+	box-shadow: none;
+}
+
+.modal {
+	background-color: #d8d1d1;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	border-radius: 10px;
 }
 
 header {
@@ -71,14 +106,7 @@ canvas {
 .modal-main {
 	width: 400px;
 	height: 200px;
-	background-color: #d8d1d1;
-	position: absolute;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	margin: auto;
-	border-radius: 10px;
+
 	padding: 0px 10px;
 }
 
@@ -87,10 +115,6 @@ canvas {
 	margin-bottom: 10px;
 }
 
-
-.modal-main h2 {
-	text-align: center;
-}
 
 .modal-main select {
 	border: 1px solid black;
@@ -108,35 +132,18 @@ canvas {
 .modal-main button {
 	margin: auto;
 	margin-top: 20px;
-	display: block;
-	color: white;
-	background-color:  #3b358b;
-	border-radius: 10px;
-	border: none;
-	padding: 5px 10px;
-	font-size: 20px;
-	outline: none;
-	cursor: pointer;
+	
 }
 
 .modal-score {
 	width: 250px;
 	height: 180px;
-	background-color: #d8d1d1;
-	position: absolute;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	margin: auto;
-	border-radius: 10px;
 	display: none;
 	flex-direction: column;
 	justify-content: space-around;
 }
 
 .modal-score h2 {
-	text-align: center;
 	margin: 0;
 }
 .modal-score p {
@@ -151,14 +158,46 @@ canvas {
 }
 .modal-score button {
 	margin: 0;
-	display: block;
-	color: white;
-	background-color: #3b358b;
-	border-radius: 10px;
-	border: none;
-	padding: 5px 10px;
-	font-size: 20px;
-	outline: none;
-	cursor: pointer; 
 	align-self: center;
+}
+
+.modal-keybord-control {
+    width: 250px;
+    height: 250px;
+    display: none;
+}
+
+.modal-keybord-control .keys {
+    margin: auto;
+    display: grid;
+    width: 170px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 10px;
+    height: 110px;
+    align-items: center;
+    padding: 0 10px 10px;   
+    justify-content: center;
+}
+.modal-keybord-control .key {
+    background-color: #969696;
+    text-transform: uppercase;
+    color: black;
+    font-size: 30px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px 3px black,
+    inset 2px 2px 5px #333;
+    grid-row: 2;
+}
+
+.modal-keybord-control .key:nth-child(1) {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.modal-keybord-control button {
+    margin: 10px auto;
 }
